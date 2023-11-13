@@ -1,11 +1,127 @@
-<html lang="zh-CN"><head> 
-  <meta charset="utf-8"> 
-  <meta name="viewport" content="width=device-width,initial-seale=1" <title=""> 
- </head> 
- <body> 
- <h1>你好</h1>
- <p>访问成功！</p>
- <p>你的设备连接正常</p>
- <a href="a.index.html">请点击跳转至主页面</a>	 
-  </body>
-</html>
+​​<!DOCTYPE html​>
+<​html​ ​lang​="​zh-CN​"​>​
+ <​head​>​  
+ ​  ​<​meta​ ​charset​="​utf-8​"​>​
+   <meta http-equiv="X-UA-Compatible"content="IE=edge">  
+  ​ <​meta​ ​name​="​viewport​" ​content​="​width=device-width,initial-seale=1​.0"​> ​
+   <​title​>​布局</title> 
+   <style>
+       body {
+         margin: 0
+         height: 100vh;
+         background-color: #eee;
+       }
+       .yinying {  
+         box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
+           rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+       }
+       .flex {
+            display: flex;
+       }
+       .baise {
+           background-color: white;
+       }
+       .flex1 {
+           flex:1;
+       }
+       .column {
+           flex-direction: column;
+       } 
+       .mg8 {
+         margin: 8px;
+       }
+       .mgr8 {
+         margin-right: 8px;
+       }
+       .mgt8 {
+         margin-top: 8px;
+       }
+       .daohang{
+           padding: 10px 20px;
+           border-bottom: 1px solid rgb(190,190,190);
+           font-size: 14px;
+           color: #666;
+       }
+       @media (max-width:600px) {
+         .cebianlan {
+                display:none;
+         }
+         .neirongqu {
+             flex-direction;
+         }
+         .shujuqu {
+             flex-direction;
+         }
+         .youqu {
+             margin-left: 8px;
+         }
+         .shuju{
+             margin:0 0 8px;
+             flex:auto;
+         }
+       }
+   </style>
+  </​head​>​
+ <body class="flex">
+   <!-- 侧边栏 -->
+   <div style="width: 200px; z-index: 2"class=" cebianlan baise yinying"></div>
+      <!-- 头像栏 -->
+      <div style="
+             padding: 10px;
+             align-items: center;
+             justify-content: center;
+             border-bottom: 1px solid #999;
+             "
+             class="flex"
+      >
+          <img
+           src="https://i0.imgs.ovh/2023/11/12/nAgvU.jpeg"
+           width="40px"
+           height="40px" 
+           alt=""
+          />
+         <div style="margin-left: 10px;">ICETHON</div>
+      </div>
+      <!-- 导航栏 -->
+      <div class="flex1">
+        <div class="daohang">导航</div>
+        <div class="daohang">导航</div>
+        <div class="daohang">导航</div>
+        <div class="daohang">导航</div>
+        <div class="daohang">导航</div>  
+      </div>
+   <!-- 主区域 -->
+   <div class="flex1 flex colun">
+     <!-- 头部栏 -->          
+     <div style="hight: 60px; z-index: 1" class="baise yinying"></div>
+     <!-- 内容区 -->
+     <div style="overflow: auto"class="neirongqu flex1 flex">
+       <!-- 左区 -->
+       <div style="flex:3" class="flex column ma8">
+       <!-- 数据区 -->
+       <div class="flex shujuqu">
+         <!--数据块-->
+         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>    
+         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>
+         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>
+         <div style="height: 100px"class="shuju flex1 baise yinying"></div>
+       </div>
+       <!-- 列表区 -->
+       <div class="flex column">
+           <!-- 列表项 -->
+           <div style="height: 160px;"class="baise mgt8 yinying"></div>
+           <div style="height: 160px;"class="baise mgr8 yinying"></div>
+           <div style="height: 160px;"class="baise mgt8 yinying"></div> 
+       </div>
+       </div>
+       <!-- 右区 -->
+       <div style="flex:1" class=" youqu flex column mgr8 mgt8">
+         <!-- 提示区 -->
+         <div style="height: 150px"class="baise yinying"></div>
+         <!-- 消息区 -->
+         <div style="heigt: 300px" class ="baise mgt8"></div>
+       </div>
+     </div>
+    </div>  
+ </body>
+</html> 

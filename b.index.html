@@ -1,117 +1,405 @@
-    <style>
-       body{
-         margin: 0
-         height: 100vh;
-         background-color: #eee;
-       }
-       .yinying{  
-         box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
-           rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
-       }
-       .flex{
+<html lang="zh">
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>黑客模拟器</title> 
+  <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+        
+        #container {
+            width: 100vw;
+            height: 100vh;
             display: flex;
-       }
-       .baise{
-           background-color: white;
-       }
-       .flex1{
-           flex:1;
-       }
-       .column{
-           flex-direction: column;
-       } 
-       .mg8{
-         margin: 8px;
-       }
-       .mgr8{
-         margin-right: 8px;
-       }
-       .mgt8{
-         margin-top: 8px;
-       }
-       .daohang{
-           padding: 10px 20px;
-           border-bottom: 1px solid rgb(190,190,190);
-           font-size: 14px;
-           color: #666;
-       }
-       @media (max-width:600px){
-         .cebianlan{
-                display:none;
-         }
-         .neirongqu{
-             flex-direction;
-         }
-         .shujuqu{
-             flex-direction;
-         }
-         .youqu{
-             margin-left: 8px;
-         }
-         .shuju{
-             margin:0 0 8px;
-             flex:auto;
-         }
-       }
-   </style>​
- <body class="flex">
-   <!-- 侧边栏 -->
-   <div style="width: 200px; z-index: 2"class=" cebianlan baise yinying"></div>
-      <!-- 头像栏 -->
-      <div style="
-             padding: 10px;
-             align-items: center;
-             justify-content: center;
-             border-bottom: 1px solid #999;
-             "
-             class="flex"
-      >
-          <img
-           src="https://i0.imgs.ovh/2023/11/12/nAgvU.jpeg"
-           width="40px"
-           height="40px" 
-           alt=""
-          />
-         <div style="margin-left: 10px;">ICETHON</div>
-      </div>
-      <!-- 导航栏 -->
-      <div class="flex1">
-        <div class="daohang">导航</div>
-        <div class="daohang">导航</div>
-        <div class="daohang">导航</div>
-        <div class="daohang">导航</div>
-        <div class="daohang">导航</div>  
-      </div>
-   <!-- 主区域 -->
-   <div class="flex1 flex colun">
-     <!-- 头部栏 -->          
-     <div style="hight: 60px; z-index: 1" class="baise yinying"></div>
-     <!-- 内容区 -->
-     <div style="overflow: auto"class="neirongqu flex1 flex">
-       <!-- 左区 -->
-       <div style="flex:3" class="flex column ma8">
-       <!-- 数据区 -->
-       <div class="flex shujuqu">
-         <!--数据块-->
-         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>    
-         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>
-         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>
-         <div style="height: 100px"class="shuju flex1 baise mgr8 yinying"></div>
-       </div>
-       <!-- 列表区 -->
-       <div class="flex column">
-           <!-- 列表项 -->
-           <div style="height: 160px;"class="baise mgt8 yinying"></div>
-           <div style="height: 160px;"class="baise mgr8 yinying"></div>
-           <div style="height: 160px;"class="baise mgt8 yinying"></div> 
-       </div>
-       </div>
-       <!-- 右区 -->
-       <div style="flex:1" class=" youqu flex column mgr8 mgt8">
-         <!-- 提示区 -->
-         <div style="height: 150px"class="baise yinying"></div>
-         <!-- 消息区 -->
-         <div style="heigt: 300px" class ="baise mgt8"></div>
-       </div>
-     </div>
-    </div>   
+            flex-direction: column;
+        }
+        
+        #header {
+            padding: 10px;
+            border-bottom: 1px solid #0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        #terminal {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        #input-line {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-top: 1px solid #0f0;
+        }
+        
+        #prompt {
+            margin-right: 5px;
+        }
+        
+        #command-input {
+            background: transparent;
+            border: none;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+            flex: 1;
+        }
+        
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .matrix-char {
+            position: absolute;
+            color: #0f0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .glitch {
+            animation: glitch 0.3s linear infinite;
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 0 #f00, -2px 0 0 #00f; }
+            25% { text-shadow: -2px 0 0 #f00, 2px 0 0 #00f; }
+            50% { text-shadow: 2px 0 0 #f00, -2px 0 0 #00f; }
+            75% { text-shadow: -2px 0 0 #f00, 2px 0 0 #00f; }
+            100% { text-shadow: 2px 0 0 #f00, -2px 0 0 #00f; }
+        }
+        
+        #status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 10px;
+            background-color: #000;
+            border: 1px solid #0f0;
+            margin-left: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #0f0;
+            width: 0%;
+            transition: width 0.5s;
+        }
+    </style> 
+  <script src="js/jq.js"></script> 
+ </head> 
+ <body id="v1"> 
+  <div id="container"> 
+   <div id="header"> 
+    <div id="v2">
+      ROOT@HACKER:~# 
+    </div> 
+    <div id="clock">
+     00:20:33
+    </div> 
+   </div> 
+   <div id="terminal"> 
+    <canvas id="matrix-bg" class="matrix-bg" width="384" height="666"></canvas> 
+    <!-- 终端内容将在这里动态生成 --> 
+    <p>黑客模拟器 v1.0</p>
+    <p>输入 "help" 查看可用命令</p>
+    <p>警告: 此程序仅用于娱乐目的</p>
+   </div> 
+   <div id="status-bar"> 
+    <div id="v3">
+      状态: 
+     <span id="status">准备入侵...</span> 
+    </div> 
+    <div id="v4">
+      进度: 
+     <div id="v5" class="progress-bar"> 
+      <div id="progress" class="progress"></div> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="input-line"> 
+    <span id="prompt">$</span> 
+    <input type="text" id="command-input" autofocus=""> 
+   </div> 
+  </div> 
+  <script>
+        // DOM元素
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('command-input');
+        const clock = document.getElementById('clock');
+        const status = document.getElementById('status');
+        const progress = document.getElementById('progress');
+        const matrixBg = document.getElementById('matrix-bg');
+        
+        // 初始化变量
+        let commandHistory = [];
+        let historyIndex = -1;
+        let isConnected = false;
+        let hackProgress = 0;
+        
+        // 设置Canvas大小
+        matrixBg.width = window.innerWidth;
+        matrixBg.height = window.innerHeight - 100; // 减去header和status bar的高度
+        
+        // 矩阵背景字符
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/';
+        const matrixDrops = [];
+        
+        // 初始化矩阵背景
+        function initMatrix() {
+            const ctx = matrixBg.getContext('2d');
+            
+            // 创建初始的列
+            for (let i = 0; i < matrixBg.width / 15; i++) {
+                matrixDrops[i] = Math.floor(Math.random() * matrixBg.height / 20);
+            }
+            
+            // 开始动画
+            animateMatrix(ctx);
+        }
+        
+        // 矩阵动画
+        function animateMatrix(ctx) {
+            // 半透明黑色背景，产生拖尾效果
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, matrixBg.width, matrixBg.height);
+            
+            // 设置字体
+            ctx.fillStyle = '#0f0';
+            ctx.font = '14px Courier New';
+            
+            // 绘制字符
+            for (let i = 0; i < matrixDrops.length; i++) {
+                // 随机字符
+                const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                
+                // 绘制字符
+                ctx.fillText(text, i * 15, matrixDrops[i] * 20);
+                
+                // 随机重置到顶部或继续下落
+                if (matrixDrops[i] * 20 > matrixBg.height && Math.random() > 0.975) {
+                    matrixDrops[i] = 0;
+                }
+                
+                // 增加下落速度
+                matrixDrops[i]++;
+            }
+            
+            // 继续动画
+            requestAnimationFrame(() => animateMatrix(ctx));
+        }
+        
+        // 更新时钟
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // 添加终端输出
+        function addTerminalOutput(text, className = '') {
+            const p = document.createElement('p');
+            if (className) {
+                p.className = className;
+            }
+            p.textContent = text;
+            terminal.appendChild(p);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        // 模拟黑客命令
+        function simulateHacking() {
+            if (hackProgress >= 100) {
+                addTerminalOutput('入侵完成！已获取所有数据。', 'glitch');
+                status.textContent = '入侵成功';
+                commandInput.disabled = true;
+                return;
+            }
+            
+            // 随机命令输出
+            const commands = [
+                '正在扫描目标网络...',
+                '绕过防火墙...',
+                '破解加密协议...',
+                '下载敏感数据...',
+                '隐藏踪迹...',
+                '植入后门程序...',
+                '绕过安全检测...',
+                '破解密码哈希...',
+                '分析网络流量...',
+                '注入恶意代码...'
+            ];
+            
+            const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+            addTerminalOutput(randomCommand);
+            
+            // 随机进度增加
+            const progressIncrease = Math.random() * 3;
+            hackProgress = Math.min(100, hackProgress + progressIncrease);
+            progress.style.width = `${hackProgress}%`;
+            
+            // 随机状态更新
+            if (Math.random() > 0.8) {
+                const statuses = [
+                    '连接稳定',
+                    '加密破解中',
+                    '数据传输中',
+                    '躲避检测',
+                    '系统渗透中'
+                ];
+                status.textContent = statuses[Math.floor(Math.random() * statuses.length)];
+            }
+            
+            // 继续模拟
+            setTimeout(simulateHacking, Math.random() * 1000 + 500);
+        }
+        
+        // 处理命令输入
+        function handleCommand() {
+            const cmd = commandInput.value.trim();
+            if (!cmd) return;
+            
+            // 添加到历史记录
+            commandHistory.push(cmd);
+            historyIndex = commandHistory.length;
+            
+            // 显示命令
+            addTerminalOutput(`$ ${cmd}`);
+            
+            // 处理命令
+            switch (cmd.toLowerCase()) {
+                case 'help':
+                    addTerminalOutput('可用命令:');
+                    addTerminalOutput('  help    - 显示帮助信息');
+                    addTerminalOutput('  connect - 连接到目标系统');
+                    addTerminalOutput('  hack    - 开始入侵');
+                    addTerminalOutput('  status  - 显示当前状态');
+                    addTerminalOutput('  clear   - 清除屏幕');
+                    break;
+                    
+                case 'connect':
+                    if (isConnected) {
+                        addTerminalOutput('已经连接到目标系统');
+                    } else {
+                        isConnected = true;
+                        addTerminalOutput('正在连接到目标系统...', 'glitch');
+                        setTimeout(() => {
+                            addTerminalOutput('连接成功!', 'glitch');
+                            status.textContent = '已连接';
+                        }, 1000);
+                    }
+                    break;
+                    
+                case 'hack':
+                    if (!isConnected) {
+                        addTerminalOutput('错误: 未连接到目标系统', 'glitch');
+                        addTerminalOutput('请先使用 "connect" 命令连接', 'glitch');
+                    } else if (hackProgress > 0) {
+                        addTerminalOutput('错误: 入侵已经在进行中', 'glitch');
+                    } else {
+                        addTerminalOutput('开始入侵目标系统...', 'glitch');
+                        status.textContent = '入侵中...';
+                        simulateHacking();
+                    }
+                    break;
+                    
+                case 'status':
+                    addTerminalOutput(`连接状态: ${isConnected ? '已连接' : '未连接'}`);
+                    addTerminalOutput(`入侵进度: ${Math.floor(hackProgress)}%`);
+                    addTerminalOutput(`当前状态: ${status.textContent}`);
+                    break;
+                    
+                case 'clear':
+                    terminal.innerHTML = '';
+                    break;
+                    
+                default:
+                    addTerminalOutput(`命令未找到: ${cmd}`, 'glitch');
+                    addTerminalOutput('输入 "help" 查看可用命令', 'glitch');
+            }
+            
+            // 清空输入框
+            commandInput.value = '';
+        }
+        
+        // 事件监听
+        commandInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleCommand();
+            } else if (e.key === 'ArrowUp') {
+                // 上箭头 - 上一条历史命令
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    commandInput.value = commandHistory[historyIndex];
+                }
+                e.preventDefault();
+            } else if (e.key === 'ArrowDown') {
+                // 下箭头 - 下一条历史命令
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    commandInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    commandInput.value = '';
+                }
+                e.preventDefault();
+            }
+        });
+        
+        // 窗口大小改变时调整矩阵大小
+        window.addEventListener('resize', () => {
+            matrixBg.width = window.innerWidth;
+            matrixBg.height = window.innerHeight - 100;
+        });
+        
+        // 初始化
+        function init() {
+            initMatrix();
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // 初始欢迎信息
+            addTerminalOutput('黑客模拟器 v1.0');
+            addTerminalOutput('输入 "help" 查看可用命令');
+            addTerminalOutput('警告: 此程序仅用于娱乐目的');
+            
+            // 聚焦输入框
+            commandInput.focus();
+        }
+        
+        // 启动
+        init();
+    </script>  
+ </body>
+</html>

@@ -1,6 +1,16 @@
 <html lang="zh-CN"><head> 
   <meta charset="utf-8"> 
   <meta name="viewport" content="width=device-width,initial-seale=1" <title=""> 
+<style>
+    .avatar-local {
+        width: 100px; /* 宽50像素 */
+        height: 100px; /* 高50像素 */
+        border-radius: 50%; /* 圆形效果 */
+        border: 3px solid white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        object-fit: cover;
+    }
+</style>
  </head> 
  <body style="margin: 10;"> 
   <script src="js/jq.js"></script> 
@@ -9,7 +19,9 @@
        text-align: center;
        padding: 40px;
        "> 
-   <img src="https://postimg.pro/image/1000065926.7LlR9o" width＝"40" height＝"40" alt="图片失踪了"/>
+<!-- 头像图片（直接插入到需要显示的位置） -->
+<img id="v2" src="https://postimg.pro/images/2025/07/18/7LlR9o.jpg" alt="头像" border="0" class="avatar-local">
+
   </div> 
   <div style="
     max-width:700px;
@@ -30,7 +42,8 @@
        padding:40px;
        font-size:12px;
        "> 
-    <p>网站制作不易，拒绝盗版</p>
+    <p>网站制作不易</p>
+    <p>拒绝盗版</p>
     <p>版权所有:ICETHON</p>
     <a href="index.html">退出</a> 
   </div>  

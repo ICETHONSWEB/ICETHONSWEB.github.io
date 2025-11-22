@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 关键：适配移动端屏幕 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全屏自适应图片</title>
+    <style>
+        /* 清除默认边距，确保图片无间隙铺满 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 让body和html占满整个屏幕高度 */
+        html, body {
+            height: 100%;
+            overflow: hidden; /* 隐藏滚动条，避免图片缩放时出现滚动 */
+        }
+        /* 核心样式：图片自适应铺满 */
+        .fullscreen-img {
+            width: 100vw; /* 宽度占满屏幕可视区域 */
+            height: 100vh; /* 高度占满屏幕可视区域 */
+            object-fit: cover; /* 保持图片比例，裁剪超出部分（避免拉伸变形） */
+            object-position: center; /* 图片居中显示 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 替换 src 中的链接为你的图片地址（本地/网络图片均可） -->
+    <img src="https://postimgcdn.b-cdn.net/postimgs/upload/2025/11/22/7rSH9N.png" alt="全屏背景图" class="fullscreen-img">
+</body>
+</html>
